@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">邮箱验证</h1>
+    <form method="POST" class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 font-bold mb-2">邮箱</label>
+            <input type="email" name="email" id="email" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <div class="mb-4">
+            <label for="token" class="block text-gray-700 font-bold mb-2">验证码</label>
+            <input type="text" name="token" id="token" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">验证邮箱</button>
+    </form>
+    <div class="mt-4 text-center">
+        <p class="text-gray-600">验证码已发送到您的邮箱，请查收并在此输入。</p>
+        <p class="text-gray-600">如果没有收到验证码，请检查垃圾邮件文件夹。</p>
+    </div>
+</div>
+{% endblock %}

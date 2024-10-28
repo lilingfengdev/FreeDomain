@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">可解析域名列表</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for domain in domains %}
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-2">{{ domain.name }}</h2>
+            <p class="mb-2"><strong>所需积分：</strong>{{ domain.points_required }}</p>
+            <p class="mb-2"><strong>简介：</strong>{{ domain.description }}</p>
+            <div class="mb-4">
+                <strong>标签：</strong>
+                {% for tag in domain.tags.split(',') %}
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tag.strip() }}</span>
+                {% endfor %}
+            </div>
+            <a href="{{ url_for('frontend.user_center') }}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 inline-block">去解析</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

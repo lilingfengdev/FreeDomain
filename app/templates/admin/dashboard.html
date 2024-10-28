@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">管理员控制台</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">管理域名</h2>
+            <a href="{{ url_for('admin.manage_domains') }}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button inline-block">管理域名</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">添加卡密</h2>
+            <a href="{{ url_for('admin.add_card') }}" class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300 fluent-button inline-block">添加新卡密</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">管理DNS平台</h2>
+            <a href="{{ url_for('admin.dns_platforms') }}" class="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 fluent-button inline-block">管理DNS平台</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">解析管理</h2>
+            <a href="{{ url_for('admin.manage_records') }}" class="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition duration-300 fluent-button inline-block">管理解析记录</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">用户管理</h2>
+            <a href="{{ url_for('admin.manage_users') }}" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300 fluent-button inline-block">管理用户</a>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">系统设置</h2>
+            <a href="{{ url_for('admin.system_settings') }}" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 fluent-button inline-block">设置</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

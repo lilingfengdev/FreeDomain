@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">添加新域名</h1>
+    <form action="{{ url_for('admin.add_domain') }}" method="POST" class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+            <label for="dns_platform" class="block text-gray-700 font-bold mb-2">选择DNS平台</label>
+            <select name="dns_platform" id="dns_platform" class="w-full px-3 py-2 border rounded-lg" required onchange="fetchAvailableDomains()">
+                <option value="">请选择DNS平台</option>
+                {% for platform in platforms %}
+                <option value="{{ platform.id }}">{{ platform.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="available_domains" class="mb-4 hidden">
+            <label for="domain_name" class="block text-gray-700 font-bold mb-2">可用域名</label>
+            <select name="domain_name" id="domain_name" class="w-full px-3 py-2 border rounded-lg" required>
+                <option value="">请选择可用域名</option>
+            </select>
+            <div id="loading" class="hidden mt-2">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                <span class="ml-2 text-gray-600">正在加载域名...</span>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="points_required" class="block text-gray-700 font-bold mb-2">所需积分</label>
+            <input type="number" name="points_required" id="points_required" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block text-gray-700 font-bold mb-2">描述</label>
+            <textarea name="description" id="description" class="w-full px-3 py-2 border rounded-lg" rows="3"></textarea>
+        </div>
+        <div class="mb-4">
+            <label for="tags" class="block text-gray-700 font-bold mb-2">标签（用逗号分隔）</label>
+            <input type="text" name="tags" id="tags" class="w-full px-3 py-2 border rounded-lg">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">添加域名</button>
+    </form>
+</div>
+
+<script>
+function fetchAvailableDomains() {
+    const platformId = document.getElementById('dns_platform').value;
+    const domainSelect = document.getElementById('domain_name');
+    const loadingElement = document.getElementById('loading');
+    const availableDomainsDiv = document.getElementById('available_domains');
+
+    if (platformId) {
+        loadingElement.classList.remove('hidden');
+        availableDomainsDiv.classList.remove('hidden');
+        domainSelect.innerHTML = ''; // 清空现有选项
+
+        fetch(`/admin/get_platform_domains/${platformId}`)
+            .then(response => response.json())
+            .then(domains => {
+                domains.forEach(domain => {
+                    const option = document.createElement('option');
+                    option.value = domain;  // 使用域名作为值
+                    option.textContent = domain;  // 显示域名
+                    domainSelect.appendChild(option);
+                });
+                loadingElement.classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingElement.classList.add('hidden');
+                alert('加载域名失败，请重试。');
+            });
+    } else {
+        availableDomainsDiv.classList.add('hidden');
+    }
+}
+</script>
+{% endblock %}

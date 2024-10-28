@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">用户管理</h1>
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-left">用户名</th>
+                    <th class="px-4 py-2 text-left">邮箱</th>
+                    <th class="px-4 py-2 text-left">积分</th>
+                    <th class="px-4 py-2 text-left">状态</th>
+                    <th class="px-4 py-2 text-left">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="border px-4 py-2">{{ user.username }}</td>
+                    <td class="border px-4 py-2">{{ user.email }}</td>
+                    <td class="border px-4 py-2">{{ user.points }}</td>
+                    <td class="border px-4 py-2">
+                        {% if user.is_banned %}
+                        <span class="text-red-500">已封禁</span>
+                        {% else %}
+                        <span class="text-green-500">正常</span>
+                        {% endif %}
+                    </td>
+                    <td class="border px-4 py-2">
+                        <form action="{{ url_for('admin.toggle_user_ban', user_id=user.id) }}" method="POST" class="inline">
+                            <button type="submit" class="bg-yellow-500 text-white py-1 px-2 rounded-lg hover:bg-yellow-600 transition duration-300 mr-2">
+                                {% if user.is_banned %}解封{% else %}封禁{% endif %}
+                            </button>
+                        </form>
+                        <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" class="inline" onsubmit="return confirm('确定要删除这个用户吗？此操作不可逆。');">
+                            <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded-lg hover:bg-red-600 transition duration-300 mr-2">删除</button>
+                        </form>
+                        <button onclick="showAdjustPointsForm({{ user.id }})" class="bg-blue-500 text-white py-1 px-2 rounded-lg hover:bg-blue-600 transition duration-300">调整积分</button>
+                    </td>
+                </tr>
+                <tr id="adjustPointsForm{{ user.id }}" class="hidden">
+                    <td colspan="5" class="border px-4 py-2">
+                        <form action="{{ url_for('admin.adjust_user_points', user_id=user.id) }}" method="POST" class="flex items-center">
+                            <input type="number" name="points_change" placeholder="输入积分变化" class="border rounded-lg px-3 py-2 mr-2" required>
+                            <button type="submit" class="bg-green-500 text-white py-1 px-2 rounded-lg hover:bg-green-600 transition duration-300">确认</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function showAdjustPointsForm(userId) {
+    const form = document.getElementById(`adjustPointsForm${userId}`);
+    form.classList.toggle('hidden');
+}
+</script>
+{% endblock %}

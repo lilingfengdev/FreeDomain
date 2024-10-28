@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">系统设置</h1>
+    <form action="{{ url_for('admin.system_settings') }}" method="POST" class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+            <label for="system_name" class="block text-gray-700 font-bold mb-2">系统名称</label>
+            <input type="text" name="system_name" id="system_name" class="w-full px-3 py-2 border rounded-lg" value="{{ settings.system_name }}" required>
+        </div>
+        <div class="mb-4">
+            <label for="forbidden_prefixes" class="block text-gray-700 font-bold mb-2">禁止的域名前缀（用逗号分隔）</label>
+            <input type="text" name="forbidden_prefixes" id="forbidden_prefixes" class="w-full px-3 py-2 border rounded-lg" value="{{ settings.forbidden_prefixes }}">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">保存设置</button>
+    </form>
+</div>
+{% endblock %}

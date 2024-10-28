@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">解析记录管理</h1>
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-left">二级域名</th>
+                    <th class="px-4 py-2 text-left">主域名</th>
+                    <th class="px-4 py-2 text-left">用户</th>
+                    <th class="px-4 py-2 text-left">创建时间</th>
+                    <th class="px-4 py-2 text-left">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subdomain in subdomains %}
+                <tr>
+                    <td class="border px-4 py-2">{{ subdomain.subdomain }}</td>
+                    <td class="border px-4 py-2">{{ subdomain.domain.name }}</td>
+                    <td class="border px-4 py-2">{{ subdomain.user.username }}</td>
+                    <td class="border px-4 py-2">{{ subdomain.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td class="border px-4 py-2">
+                        <form action="{{ url_for('admin.delete_record', record_id=subdomain.id) }}" method="POST" onsubmit="return confirm('确定要删除这条记录吗？');">
+                            <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded-lg hover:bg-red-600 transition duration-300">删除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

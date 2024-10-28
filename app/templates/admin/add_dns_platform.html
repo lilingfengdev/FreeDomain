@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">添加DNS平台</h1>
+    <form action="{{ url_for('admin.add_dns_platform') }}" method="POST" class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 font-bold mb-2">平台名称</label>
+            <input type="text" name="name" id="name" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <div class="mb-4">
+            <label for="platform_type" class="block text-gray-700 font-bold mb-2">平台类型</label>
+            <select name="platform_type" id="platform_type" class="w-full px-3 py-2 border rounded-lg" required onchange="updateFields()">
+                <option value="">请选择平台类型</option>
+                <option value="cloudflare">Cloudflare</option>
+                <option value="dnspod">DNSPod</option>
+            </select>
+        </div>
+        <div id="cloudflare_fields" style="display: none;">
+            <div class="mb-4">
+                <label for="cf_api_key" class="block text-gray-700 font-bold mb-2">API Key</label>
+                <input type="text" name="cf_api_key" id="cf_api_key" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div class="mb-4">
+                <label for="cf_email" class="block text-gray-700 font-bold mb-2">Email</label>
+                <input type="email" name="cf_email" id="cf_email" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+        </div>
+        <div id="dnspod_fields" style="display: none;">
+            <div class="mb-4">
+                <label for="dp_api_id" class="block text-gray-700 font-bold mb-2">API ID</label>
+                <input type="text" name="dp_api_id" id="dp_api_id" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div class="mb-4">
+                <label for="dp_api_token" class="block text-gray-700 font-bold mb-2">API Token</label>
+                <input type="text" name="dp_api_token" id="dp_api_token" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="note" class="block text-gray-700 font-bold mb-2">备注</label>
+            <textarea name="note" id="note" class="w-full px-3 py-2 border rounded-lg" rows="3"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">添加DNS平台</button>
+    </form>
+</div>
+
+<script>
+function updateFields() {
+    const platformType = document.getElementById('platform_type').value;
+    const cloudflareFields = document.getElementById('cloudflare_fields');
+    const dnspodFields = document.getElementById('dnspod_fields');
+
+    if (platformType === 'cloudflare') {
+        cloudflareFields.style.display = 'block';
+        dnspodFields.style.display = 'none';
+    } else if (platformType === 'dnspod') {
+        cloudflareFields.style.display = 'none';
+        dnspodFields.style.display = 'block';
+    } else {
+        cloudflareFields.style.display = 'none';
+        dnspodFields.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

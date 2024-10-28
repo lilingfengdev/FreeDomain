@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-2">
+        <div class="fluent-card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">个人资料</h2>
+            <p class="mb-2"><strong>用户名：</strong> {{ current_user.username }}</p>
+            <p class="mb-2"><strong>邮箱：</strong> {{ current_user.email }}</p>
+            <p class="mb-2"><strong>当前积分：</strong> {{ current_user.points }}</p>
+            <a href="{{ url_for('frontend.account_settings') }}" class="text-blue-500 hover:underline">修改密码</a>
+        </div>
+
+        <div class="fluent-card p-6">
+            <h2 class="text-2xl font-bold mb-4">我的二级域名</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for subdomain in subdomains %}
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <h3 class="text-xl font-semibold mb-2">{{ subdomain.subdomain }}.{{ subdomain.domain.name }}</h3>
+                    <p class="text-gray-600 mb-2">类型: {{ subdomain.record_type }}</p>
+                    <p class="text-gray-600 mb-2">值: {{ subdomain.record_value }}</p>
+                    <p class="text-gray-600 mb-2">创建时间：{{ subdomain.created_at.strftime('%Y-%m-%d') }}</p>
+                    <div class="mt-2">
+                        <a href="{{ url_for('frontend.edit_subdomain', id=subdomain.id) }}" class="text-blue-500 hover:underline mr-2">编辑</a>
+                        <form action="{{ url_for('frontend.delete_subdomain', id=subdomain.id) }}" method="POST" class="inline">
+                            <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('确定要删除这个二级域名吗？')">删除</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="md:col-span-1">
+        <div class="fluent-card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">每日签到</h2>
+            <a href="{{ url_for('frontend.daily_check_in') }}" class="block w-full bg-green-500 text-white py-2 px-4 rounded-lg text-center hover:bg-green-600 transition duration-300 fluent-button">签到领取积分</a>
+        </div>
+
+        <div class="fluent-card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">兑换卡密</h2>
+            <form action="{{ url_for('frontend.redeem_card') }}" method="POST">
+                <div class="mb-4">
+                    <input type="text" name="code" class="w-full px-3 py-2 border rounded-lg" placeholder="输入卡密" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">兑换</button>
+            </form>
+        </div>
+
+        <div class="fluent-card p-6">
+            <h2 class="text-2xl font-bold mb-4">创建二级域名</h2>
+            <form action="{{ url_for('frontend.create_subdomain') }}" method="POST">
+                <div class="mb-4">
+                    <select name="domain_id" class="w-full px-3 py-2 border rounded-lg" required>
+                        {% for domain in domains %}
+                        <option value="{{ domain.id }}">{{ domain.name }} ({{ domain.points_required }}积分)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="subdomain" class="w-full px-3 py-2 border rounded-lg" placeholder="输入二级域名" required>
+                </div>
+                <div class="mb-4">
+                    <select name="record_type" class="w-full px-3 py-2 border rounded-lg" required>
+                        <option value="A">A</option>
+                        <option value="AAAA">AAAA</option>
+                        <option value="CNAME">CNAME</option>
+                        <option value="SRV">SRV</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="record_value" class="w-full px-3 py-2 border rounded-lg" placeholder="输入解析值" required>
+                </div>
+                <button type="submit" class="w-full bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300 fluent-button">创建二级域名</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

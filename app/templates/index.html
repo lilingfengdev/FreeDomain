@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="fluent-card p-8 mb-8">
+    <h1 class="text-4xl font-bold mb-4">欢迎使用二级域名分发系统</h1>
+    <p class="text-xl mb-4">我们提供简单、快速的二级域名注册服务。</p>
+    <ul class="list-disc list-inside mb-4">
+        <li>轻松创建个性化的二级域名</li>
+        <li>多种顶级域名可供选择</li>
+        <li>安全可靠的DNS管理</li>
+        <li>积分奖励系统</li>
+    </ul>
+    {% if not current_user.is_authenticated %}
+        <div class="mt-8">
+            <a href="{{ url_for('auth.register') }}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">立即注册</a>
+            <a href="{{ url_for('auth.login') }}" class="ml-4 text-blue-500 hover:underline">已有账号？立即登录</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="fluent-card p-6">
+        <h2 class="text-2xl font-bold mb-2">简单易用</h2>
+        <p>只需几个简单的步骤，即可创建您的个性化二级域名。</p>
+    </div>
+    <div class="fluent-card p-6">
+        <h2 class="text-2xl font-bold mb-2">安全可靠</h2>
+        <p>我们使用业界领先的DNS服务提供商，确保您的域名安全可靠。</p>
+    </div>
+    <div class="fluent-card p-6">
+        <h2 class="text-2xl font-bold mb-2">积分奖励</h2>
+        <p>通过每日签到和其他活动获得积分，兑换更多域名。</p>
+    </div>
+</div>
+{% endblock %}

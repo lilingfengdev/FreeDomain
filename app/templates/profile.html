@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">个人资料</h1>
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="mb-2"><strong>用户名：</strong> {{ current_user.username }}</p>
+        <p class="mb-2"><strong>邮箱：</strong> {{ current_user.email }}</p>
+        <p class="mb-2"><strong>当前积分：</strong> {{ current_user.points }}</p>
+    </div>
+    <h2 class="text-2xl font-bold mt-8 mb-4">我的二级域名</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for subdomain in subdomains %}
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-xl font-semibold mb-2">{{ subdomain.subdomain }}.{{ subdomain.domain.name }}</h3>
+            <p class="text-gray-600 mb-2">创建时间：{{ subdomain.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

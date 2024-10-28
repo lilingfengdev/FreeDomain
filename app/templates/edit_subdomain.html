@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">编辑二级域名</h1>
+    <form action="{{ url_for('frontend.edit_subdomain', id=subdomain.id) }}" method="POST" class="bg-white shadow-md rounded-lg p-6">
+        <div class="mb-4">
+            <p class="font-bold">二级域名: {{ subdomain.subdomain }}.{{ subdomain.domain.name }}</p>
+        </div>
+        <div class="mb-4">
+            <label for="record_type" class="block text-gray-700 font-bold mb-2">记录类型</label>
+            <select name="record_type" id="record_type" class="w-full px-3 py-2 border rounded-lg" required>
+                <option value="A" {% if subdomain.record_type == 'A' %}selected{% endif %}>A</option>
+                <option value="AAAA" {% if subdomain.record_type == 'AAAA' %}selected{% endif %}>AAAA</option>
+                <option value="CNAME" {% if subdomain.record_type == 'CNAME' %}selected{% endif %}>CNAME</option>
+                <option value="SRV" {% if subdomain.record_type == 'SRV' %}selected{% endif %}>SRV</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="record_value" class="block text-gray-700 font-bold mb-2">记录值</label>
+            <input type="text" name="record_value" id="record_value" class="w-full px-3 py-2 border rounded-lg" value="{{ subdomain.record_value }}" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 fluent-button">更新二级域名</button>
+    </form>
+</div>
+{% endblock %}
