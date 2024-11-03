@@ -19,3 +19,8 @@
 在项目目录下执行：`flask create-admin`
 
 然后按提示输入信息即可
+
+#### 2.2 配置SMTP、极验验证码信息
+打开 `config.py` 
+
+将SMTP及极验4.0 ID和KEY填入
